@@ -8,7 +8,7 @@ public class Persona {
     public char sexo;
 
     public Persona(String nombre, String dni, char sexo) throws DatosNoCorrectosException {
-        if (nombre.length() <= 2 && nombre.length() >= 20 && !(nombre instanceof String)) {
+        if (nombre.length() < 2 && nombre.length() > 20 && !(nombre instanceof String)) {
             throw new DatosNoCorrectosException("El nombre debe tener entre 2 y 20 caracteres y ser un String");
         } else {
             this.nombre = nombre;

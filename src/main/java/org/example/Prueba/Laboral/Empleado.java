@@ -4,12 +4,12 @@ import org.example.Prueba.Laboral.DatosNoCorrectosException;
 
 public class Empleado extends Persona {
     private int categoria;
-    public int anyos_trabajados;
+    public int anyos;
 
-    public Empleado(String nombre, String dni, char sexo, int anyos_trabajados, int categoria) throws DatosNoCorrectosException {
+    public Empleado(String nombre, String dni, char sexo, int anyos, int categoria) throws DatosNoCorrectosException {
         super(nombre, dni, sexo);
-        if (anyos_trabajados > 0) {
-            this.anyos_trabajados = anyos_trabajados;
+        if (anyos > 0) {
+            this.anyos = anyos;
             if (categoria > 0 && categoria <= 10) {
                 this.categoria = categoria;
             } else {
@@ -30,9 +30,9 @@ public class Empleado extends Persona {
 
     }
 
-    public void setAnyos_trabajados(int anyos_trabajados) throws DatosNoCorrectosException {
-        if (anyos_trabajados > 0) {
-            this.anyos_trabajados = anyos_trabajados;
+    public void setAnyos(int anyos) throws DatosNoCorrectosException {
+        if (anyos > 0) {
+            this.anyos = anyos;
         } else {
             throw new DatosNoCorrectosException("El sexo no es correcto");
         }
@@ -47,12 +47,12 @@ public class Empleado extends Persona {
     }
 
     public void incrAnyo() {
-        ++this.anyos_trabajados;
+        ++this.anyos;
     }
 
     public void Imprime() {
         super.Imprime();
         System.out.println("Categoria: " + this.categoria);
-        System.out.println("Anyos Trabajados: " + this.anyos_trabajados);
+        System.out.println("Anyos Trabajados: " + this.anyos);
     }
 }

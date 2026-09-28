@@ -8,12 +8,12 @@ public class Persona {
     public char sexo;
 
     public Persona(String nombre, String dni, char sexo) throws DatosNoCorrectosException {
-        if (nombre.length() < 2 && nombre.length() > 20 && !(nombre instanceof String)) {
-            throw new DatosNoCorrectosException("El nombre debe tener entre 2 y 20 caracteres y ser un String");
+        if(nombre == null || nombre.length() < 2 || nombre.length() > 20){
+            throw new DatosNoCorrectosException("Nombre incorrecto");
         } else {
             this.nombre = nombre;
-            if (dni.length() != 9 && !(dni instanceof String)) {
-                throw new DatosNoCorrectosException("El dni debe tener entre 9 caracteres y ser un String");
+            if(dni == null || dni.length()!=9){
+                throw new DatosNoCorrectosException("DNI incorrecto");
             } else {
                 this.dni = dni;
                 if (sexo != 'f' && sexo != 'm') {

@@ -40,29 +40,31 @@ public class CalculaNomina {
             op = leerEntero(sc);
             try {
                 switch (op) {
-                    case 1 -> {
+                    case 1:
                         System.out.print("Nuevo nombre: ");
                         e.setNombre(sc.nextLine().trim());
-                    }
-                    case 2 -> {
+                        break;
+                    case 2:
                         System.out.print("Nuevo DNI: ");
                         e.setDni(sc.nextLine().trim());
-                    }
-                    case 3 -> {
+                        break;
+                    case 3:
                         System.out.print("Nuevo sexo (f/m): ");
                         String s = sc.nextLine().trim().toLowerCase();
                         e.setSexo(s.isEmpty() ? ' ' : s.charAt(0));
-                    }
-                    case 4 -> {
+                        break;
+                    case 4:
                         System.out.print("Nueva categoría (1-10): ");
                         e.setCategoria(leerEntero(sc));
-                    }
-                    case 5 -> {
+                        break;
+                    case 5:
                         System.out.print("Años trabajados: ");
                         e.setAnyos(leerEntero(sc));
-                    }
-                    case 0 -> { }
-                    default -> System.out.println("Opción no válida.");
+                        break;
+                    case 0:
+                        System.out.println("Salir");
+                        break;
+                    default: System.out.println("Opción no válida.");
                 }
             } catch (DatosNoCorrectosException ex) {
                 System.out.println("Dato incorrecto: " + ex.getMessage());

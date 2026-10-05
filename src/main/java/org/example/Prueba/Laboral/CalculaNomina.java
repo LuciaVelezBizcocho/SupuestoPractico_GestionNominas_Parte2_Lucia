@@ -32,6 +32,7 @@ public class CalculaNomina {
             return;
         }
 
+        //ARREGLOS
         int op;
         do {
             System.out.println("\n1. Nombre\n2. DNI\n3. Sexo (f/m)\n4. Categoría\n5. Años trabajados\n0. Guardar y volver");

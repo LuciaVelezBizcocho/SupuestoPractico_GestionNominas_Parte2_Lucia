@@ -30,8 +30,24 @@ public class Persona {
         this.sexo = sexo;
     }
 
-    public void setDni(String dni) {
+    public String getNombre() { return nombre; }
+    public String getDni() { return dni; }
+    public char getSexo() { return sexo; }
+
+    public void setDni(String dni) throws DatosNoCorrectosException {
+        if (dni == null || dni.length() != 9) throw new DatosNoCorrectosException("DNI incorrecto");
         this.dni = dni;
+    }
+
+    public void setNombre(String nombre) throws DatosNoCorrectosException {
+        if (nombre == null || nombre.length() < 2 || nombre.length() > 20)
+            throw new DatosNoCorrectosException("Nombre incorrecto");
+        this.nombre = nombre;
+    }
+
+    public void setSexo(char sexo) throws DatosNoCorrectosException {
+        if (sexo != 'f' && sexo != 'm') throw new DatosNoCorrectosException("El sexo no es correcto");
+        this.sexo = sexo;
     }
 
     public void Imprime() {

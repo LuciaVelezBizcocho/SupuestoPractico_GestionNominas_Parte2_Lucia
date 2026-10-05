@@ -26,8 +26,10 @@ public class Empleado extends Persona {
 
     public int getCategoria() {
         return this.categoria;
+    }
 
-
+    public int getAnyos() {
+        return this.anyos;
     }
 
     public void setAnyos(int anyos) throws DatosNoCorrectosException {

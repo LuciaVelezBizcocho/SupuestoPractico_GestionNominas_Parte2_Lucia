@@ -2,6 +2,7 @@ package org.example.Prueba.Laboral;
 
 import org.example.Prueba.Laboral.BD.EmpleadoDAO;
 import org.example.Prueba.Laboral.BD.GestorNominas;
+import org.example.Prueba.Laboral.Exception.DatosNoCorrectosException;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -75,7 +76,7 @@ public class CalculaNomina {
         System.out.println("Empleado actualizado.");
     }
 
-    public static void main() throws DatosNoCorrectosException {
+    public static void main(String[] args) throws DatosNoCorrectosException {
         EmpleadoDAO dao = new EmpleadoDAO();
         GestorNominas gestor = new GestorNominas();
         Scanner sc = new Scanner(System.in);

@@ -1,6 +1,6 @@
 package org.example.Prueba.Laboral;
 
-import org.example.Prueba.Laboral.DatosNoCorrectosException;
+import org.example.Prueba.Laboral.Exception.DatosNoCorrectosException;
 
 public class Persona {
     public String nombre;
@@ -16,7 +16,7 @@ public class Persona {
                 throw new DatosNoCorrectosException("DNI incorrecto");
             } else {
                 this.dni = dni;
-                if (sexo != 'f' && sexo != 'm') {
+                if (sexo != 'F' && sexo != 'M') {
                     throw new DatosNoCorrectosException("El sexo no es correcto");
                 } else {
                     this.sexo = sexo;

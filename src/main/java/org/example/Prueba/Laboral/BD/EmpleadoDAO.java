@@ -1,6 +1,6 @@
 package org.example.Prueba.Laboral.BD;
 
-import org.example.Prueba.Laboral.DatosNoCorrectosException;
+import org.example.Prueba.Laboral.Exception.DatosNoCorrectosException;
 import org.example.Prueba.Laboral.Empleado;
 import org.example.Prueba.Laboral.Nomina;
 

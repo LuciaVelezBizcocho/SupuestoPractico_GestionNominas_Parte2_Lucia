@@ -1,6 +1,6 @@
 package org.example.Prueba.Laboral;
 
-import org.example.Prueba.Laboral.DatosNoCorrectosException;
+import org.example.Prueba.Laboral.Exception.DatosNoCorrectosException;
 
 public class Empleado extends Persona {
     private int categoria;
@@ -8,7 +8,7 @@ public class Empleado extends Persona {
 
     public Empleado(String nombre, String dni, char sexo, int anyos, int categoria) throws DatosNoCorrectosException {
         super(nombre, dni, sexo);
-        if (anyos > 0) {
+        if (anyos >= 0) {
             this.anyos = anyos;
             if (categoria > 0 && categoria <= 10) {
                 this.categoria = categoria;

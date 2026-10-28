@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.example.Prueba.Laboral.BD.ConexionBD;
 import org.example.Prueba.Laboral.BD.EmpleadoDAO;
 import org.example.Prueba.Laboral.Empleado;
 import org.example.Prueba.Laboral.Exception.DatosNoCorrectosException;
@@ -20,6 +19,8 @@ public class NominaServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    private EmpleadoDAO dao = new EmpleadoDAO();
+
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
@@ -28,16 +29,15 @@ public class NominaServlet extends HttpServlet {
         String accion = request.getParameter("accion");
 
         if (accion == null) {
-            accion = "menu";
+            request.getRequestDispatcher("/index.jsp")
+                    .forward(request, response);
+            return;
         }
 
         switch (accion) {
+
             case "listar":
-
                 try {
-
-                    EmpleadoDAO dao = new EmpleadoDAO();
-
                     List<Empleado> lista = dao.listar();
 
                     request.setAttribute("lista", lista);
@@ -47,19 +47,8 @@ public class NominaServlet extends HttpServlet {
                     ).forward(request, response);
 
                 } catch (SQLException | DatosNoCorrectosException e) {
-
-                    throw new ServletException(
-                            "Error al obtener los empleados",
-                            e
-                    );
+                    throw new ServletException(e);
                 }
-
-                break;
-
-            case "crear":
-                request.getRequestDispatcher(
-                        "/WEB-INF/views/crear.jsp"
-                ).forward(request, response);
                 break;
 
             case "salario":
@@ -68,34 +57,16 @@ public class NominaServlet extends HttpServlet {
                 ).forward(request, response);
                 break;
 
-            case "modificar":
+            case "buscar":
                 request.getRequestDispatcher(
-                        "/WEB-INF/views/modificar.jsp"
-                ).forward(request, response);
-                break;
-
-            case "recalcular":
-                request.getRequestDispatcher(
-                        "/WEB-INF/views/recalcular.jsp"
-                ).forward(request, response);
-                break;
-
-            case "recalcularTodos":
-                request.getRequestDispatcher(
-                        "/WEB-INF/views/recalcularTodos.jsp"
-                ).forward(request, response);
-                break;
-
-            case "copia":
-                request.getRequestDispatcher(
-                        "/WEB-INF/views/copia.jsp"
+                        "/WEB-INF/views/buscar.jsp"
                 ).forward(request, response);
                 break;
 
             default:
-                request.getRequestDispatcher("/index.jsp")
-                        .forward(request, response);
-                break;
+                response.sendRedirect(
+                        request.getContextPath() + "/index.jsp"
+                );
         }
     }
 
@@ -108,63 +79,84 @@ public class NominaServlet extends HttpServlet {
 
         String accion = request.getParameter("accion");
 
-        if ("crear".equals(accion)) {
+        try {
+            if ("crear".equals(accion)) {
 
-            String nombre = request.getParameter("nombre");
-            String dni = request.getParameter("dni");
-            String sexoTexto = request.getParameter("sexo");
-            int anyos = Integer.parseInt(request.getParameter("anyos"));
-            int categoria = Integer.parseInt(request.getParameter("categoria"));
+                String nombre = request.getParameter("nombre");
+                String dni = request.getParameter("dni");
+                char sexo = request.getParameter("sexo").toUpperCase().charAt(0);
+                int anyos = Integer.parseInt(request.getParameter("anyos"));
+                int categoria = Integer.parseInt(request.getParameter("categoria"));
 
-            try {
-
-                char sexo = sexoTexto.charAt(0);
-
-                Empleado empleado = new Empleado(
-                        nombre,
-                        dni,
-                        sexo,
-                        anyos,
-                        categoria
-                );
-
-                EmpleadoDAO dao = new EmpleadoDAO();
+                Empleado empleado =
+                        new Empleado(nombre, dni, sexo, anyos, categoria);
 
                 dao.insertar(empleado);
 
-                // Después de guardar, volvemos a la lista
                 response.sendRedirect(
-                        request.getContextPath()
-                                + "/empleados?accion=listar"
+                        request.getContextPath() + "/empleados?accion=listar"
                 );
+            }
 
-            } catch (DatosNoCorrectosException e) {
+            // CONSULTAR SALARIO
+            else if ("consultarSalario".equals(accion)) {
 
-                request.setAttribute("error", e.getMessage());
+                String dni = request.getParameter("dni");
+
+                Integer sueldo = dao.obtenerSueldo(dni);
+
+                request.setAttribute("sueldo", sueldo);
+                request.setAttribute("dni", dni);
 
                 request.getRequestDispatcher(
-                        "/WEB-INF/views/crear.jsp"
-                ).forward(request, response);
-
-            } catch (SQLException e) {
-
-                request.setAttribute(
-                        "error",
-                        "Error al guardar el empleado: " + e.getMessage()
-                );
-
-                request.getRequestDispatcher(
-                        "/WEB-INF/views/crear.jsp"
+                        "/WEB-INF/views/salario.jsp"
                 ).forward(request, response);
             }
 
-        } else {
+            // BUSCAR EMPLEADOS
+            else if ("buscarEmpleados".equals(accion)) {
 
-            response.sendRedirect(
-                    request.getContextPath() + "/index.jsp"
-            );
+                String nombre = request.getParameter("nombre");
+                String dni = request.getParameter("dni");
+                String sexo = request.getParameter("sexo");
+                String categoria = request.getParameter("categoria");
+                String anyos = request.getParameter("anyos");
+
+                List<Empleado> resultados =
+                        dao.buscarPorFiltros(
+                                nombre, dni, sexo, categoria, anyos
+                        );
+
+                request.setAttribute("lista", resultados);
+
+                request.getRequestDispatcher(
+                        "/WEB-INF/views/resultados.jsp"
+                ).forward(request, response);
+            } else if ("actualizar".equals(accion)) {
+
+                String dni = request.getParameter("dni");
+                String nombre = request.getParameter("nombre");
+                char sexo = request.getParameter("sexo").toUpperCase().charAt(0);
+                int anyos = Integer.parseInt(request.getParameter("anyos"));
+                int categoria = Integer.parseInt(request.getParameter("categoria"));
+
+                Empleado empleado =
+                        new Empleado(nombre, dni, sexo, anyos, categoria);
+
+                dao.actualizar(dni, empleado);
+
+                response.sendRedirect(
+                        request.getContextPath() + "/empleados?accion=listar"
+                );
+            }
+
+        } catch (SQLException | DatosNoCorrectosException e) {
+
+            request.setAttribute("error", e.getMessage());
+
+            request.getRequestDispatcher(
+                    "/WEB-INF/views/error.jsp"
+            ).forward(request, response);
         }
     }
-
-
 }

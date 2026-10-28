@@ -4,6 +4,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/CSS/estilos.css">
     <title>Crear empleado</title>
 </head>
 <body>

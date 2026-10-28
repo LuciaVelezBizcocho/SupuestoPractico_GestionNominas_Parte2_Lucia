@@ -33,7 +33,7 @@ public class Empleado extends Persona {
     }
 
     public void setAnyos(int anyos) throws DatosNoCorrectosException {
-        if (anyos > 0) {
+        if (anyos >= 0) {
             this.anyos = anyos;
         } else {
             throw new DatosNoCorrectosException("El sexo no es correcto");
@@ -46,6 +46,18 @@ public class Empleado extends Persona {
         } else {
             throw new IllegalArgumentException("El categoria debe estar entre 1 e 10");
         }
+    }
+
+    public void setSexo(char sexo) throws DatosNoCorrectosException {
+        sexo = Character.toUpperCase(sexo);
+
+        if (sexo != 'F' && sexo != 'M') {
+            throw new DatosNoCorrectosException(
+                    "El sexo no es correcto"
+            );
+        }
+
+        this.sexo = sexo;
     }
 
     public void incrAnyo() {

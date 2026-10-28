@@ -46,7 +46,13 @@ public class Persona {
     }
 
     public void setSexo(char sexo) throws DatosNoCorrectosException {
-        if (sexo != 'f' && sexo != 'm') throw new DatosNoCorrectosException("El sexo no es correcto");
+
+        sexo = Character.toUpperCase(sexo);
+
+        if (sexo != 'F' && sexo != 'M') {
+            throw new DatosNoCorrectosException("El sexo no es correcto");
+        }
+
         this.sexo = sexo;
     }
 

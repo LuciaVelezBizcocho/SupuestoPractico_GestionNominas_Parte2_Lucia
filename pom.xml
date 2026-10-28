@@ -46,6 +46,7 @@
 
 
     <build>
+        <finalName>empresa</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

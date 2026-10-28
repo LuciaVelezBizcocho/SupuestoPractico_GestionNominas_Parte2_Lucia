@@ -6,6 +6,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/CSS/estilos.css">
     <title>Editar empleado</title>
 </head>
 <body>
@@ -30,23 +32,21 @@
                    minlength="2" maxlength="20" required>
         </p>
 
-        <p>
-            Sexo:
-            <select name="sexo" required>
-                <option value="m"
-                    <c:if test="${empleado.sexo == 'm'}">
-                        selected
-                    </c:if>>
-                    Masculino
-                </option>
-                <option value="f"
-                    <c:if test="${empleado.sexo == 'f'}">
-                        selected
-                    </c:if>>
-                    Femenino
-                </option>
-            </select>
-        </p>
+        <div>
+            <label>Sexo:</label>
+
+            <input type="radio"
+                   name="sexo"
+                   value="M"
+                   ${empleado.sexo == 'M' ? 'checked' : ''}>
+            <label>Hombre</label>
+
+            <input type="radio"
+                   name="sexo"
+                   value="F"
+                   ${empleado.sexo == 'F' ? 'checked' : ''}>
+            <label>Mujer</label>
+        </div>
 
         <p>
             Años trabajados:

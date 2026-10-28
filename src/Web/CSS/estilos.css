@@ -1,0 +1,202 @@
+/* ========== VARIABLES DE COLOR ========== */
+:root {
+    --fondo: #faf7f2;          /* blanco roto */
+    --tarjeta: #fffdf9;
+    --morado: #a78bdb;         /* morado claro principal */
+    --morado-oscuro: #8566c4;
+    --morado-suave: #efe8fb;
+    --morado-borde: #ddd2f3;
+    --texto: #3d3552;
+    --texto-suave: #7a7290;
+}
+
+/* ========== GENERAL ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    background-color: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* ========== CONTENEDOR ========== */
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    background-color: var(--tarjeta);
+    padding: 35px;
+    border-radius: 16px;
+    border: 1px solid var(--morado-borde);
+    box-shadow: 0 6px 20px rgba(133, 102, 196, 0.12);
+}
+
+/* ========== TÍTULOS ========== */
+h1 {
+    color: var(--morado-oscuro);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+h2 {
+    color: var(--morado-oscuro);
+    margin-bottom: 12px;
+}
+
+.mensaje {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--texto-suave);
+}
+
+/* ========== MENÚ ========== */
+nav ul {
+    list-style: none;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+nav ul li {
+    margin: 14px 0;
+}
+
+nav ul li a {
+    display: block;
+    background-color: var(--morado-suave);
+    color: var(--morado-oscuro);
+    text-decoration: none;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--morado-borde);
+    text-align: center;
+    font-size: 16px;
+    transition: all 0.25s;
+}
+
+nav ul li a:hover {
+    background-color: var(--morado);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ========== FORMULARIOS ========== */
+form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin: 14px 0 6px;
+    color: var(--morado-oscuro);
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--morado-borde);
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: white;
+    color: var(--texto);
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--morado);
+    box-shadow: 0 0 0 3px rgba(167, 139, 219, 0.25);
+}
+
+/* ========== BOTONES ========== */
+button {
+    background-color: var(--morado);
+    color: white;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 20px;
+    margin-right: 8px;
+    transition: background-color 0.25s;
+}
+
+button:hover {
+    background-color: var(--morado-oscuro);
+}
+
+.volver {
+    background-color: var(--morado-suave);
+    color: var(--morado-oscuro);
+    border: 1px solid var(--morado-borde);
+}
+
+.volver:hover {
+    background-color: var(--morado-borde);
+}
+
+/* ========== TABLAS ========== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th {
+    background-color: var(--morado);
+    color: white;
+    padding: 13px;
+    text-align: center;
+}
+
+td {
+    padding: 11px;
+    text-align: center;
+    border-bottom: 1px solid var(--morado-borde);
+}
+
+tr:nth-child(even) td {
+    background-color: var(--morado-suave);
+}
+
+tr:hover td {
+    background-color: #e4d9f7;
+}
+
+/* ========== RESULTADOS Y ERRORES ========== */
+.resultado {
+    background-color: var(--morado-suave);
+    border-left: 5px solid var(--morado);
+    padding: 16px;
+    margin-top: 22px;
+    border-radius: 8px;
+}
+
+.error {
+    background-color: #fdeeee;
+    border-left: 5px solid #d9667a;
+    color: #9c3a4c;
+    padding: 16px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 650px) {
+    body { padding: 15px 8px; }
+    .container { padding: 20px 14px; }
+    h1 { font-size: 23px; }
+    table { font-size: 12px; }
+    th, td { padding: 8px 4px; }
+}

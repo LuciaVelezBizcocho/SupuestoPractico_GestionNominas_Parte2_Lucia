@@ -34,21 +34,17 @@ public class EmpleadoDAO {
 
         /** Inserta o actualiza el sueldo de un empleado en Nominas. */
         public void guardarSueldo(String dni, int sueldo) throws SQLException {
-            try (Connection c = ConexionBD.conectar()) {
-            try (PreparedStatement ps = c.prepareStatement(
-                    "UPDATE nominas SET Sueldo = ? WHERE empleado = ?")) {
-                ps.setInt(1, sueldo);
-                ps.setString(2, dni);
-                if (ps.executeUpdate() > 0) return;   // ya existía la nómina
-            }
-            try (PreparedStatement ps = c.prepareStatement(
-                    "INSERT INTO nominas (Sueldo, empleado) VALUES (?, ?)")) {
-                ps.setInt(1, sueldo);
-                ps.setString(2, dni);
+            String sql = "INSERT INTO Nominas (dni, sueldo) VALUES (?, ?) "
+                    + "ON DUPLICATE KEY UPDATE sueldo = VALUES(sueldo)";
+
+            try (Connection c = ConexionBD.conectar();
+                 PreparedStatement ps = c.prepareStatement(sql)) {
+
+                ps.setString(1, dni);
+                ps.setInt(2, sueldo);
+
                 ps.executeUpdate();
             }
-        }
-
         }
 
         /** Devuelve todos los empleados. */
@@ -73,12 +69,23 @@ public class EmpleadoDAO {
             }
         }
 
+        /** Obtiene el sueldo de un empleado mediante su DNI. */
         public Integer obtenerSueldo(String dni) throws SQLException {
+
+            String sql = "SELECT sueldo FROM Nominas WHERE dni = ?";
+
             try (Connection c = ConexionBD.conectar();
-                 PreparedStatement ps = c.prepareStatement("SELECT Sueldo FROM nominas WHERE empleado = ?")) {
+                 PreparedStatement ps = c.prepareStatement(sql)) {
+
                 ps.setString(1, dni);
+
                 try (ResultSet rs = ps.executeQuery()) {
-                    return rs.next() ? rs.getInt("Sueldo") : null;
+
+                    if (rs.next()) {
+                        return rs.getInt("sueldo");
+                    }
+
+                    return null;
                 }
             }
         }
@@ -112,4 +119,69 @@ public class EmpleadoDAO {
             for (Empleado e : todos) guardarSueldo(e.getDni(), nomina.sueldo(e));
             return todos.size();
         }
+
+    /**
+     * Busca empleados utilizando diferentes criterios.
+     * Los campos vacíos no se tienen en cuenta.
+     */
+    public List<Empleado> buscarPorFiltros(
+            String nombre,
+            String dni,
+            String sexo,
+            String categoria,
+            String anyos)
+            throws SQLException, DatosNoCorrectosException {
+
+        List<Empleado> lista = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT * FROM Empleados WHERE 1=1"
+        );
+
+        List<Object> parametros = new ArrayList<>();
+
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            sql.append(" AND nombre LIKE ?");
+            parametros.add("%" + nombre.trim() + "%");
+        }
+
+        if (dni != null && !dni.trim().isEmpty()) {
+            sql.append(" AND dni LIKE ?");
+            parametros.add("%" + dni.trim() + "%");
+        }
+
+        if (sexo != null && !sexo.trim().isEmpty()) {
+            sql.append(" AND sexo = ?");
+            parametros.add(sexo.trim().toUpperCase());
+        }
+
+        if (categoria != null && !categoria.trim().isEmpty()) {
+            sql.append(" AND categoria = ?");
+            parametros.add(Integer.parseInt(categoria));
+        }
+
+        if (anyos != null && !anyos.trim().isEmpty()) {
+            sql.append(" AND anyos = ?");
+            parametros.add(Integer.parseInt(anyos));
+        }
+
+        sql.append(" ORDER BY nombre");
+
+        try (Connection c = ConexionBD.conectar();
+             PreparedStatement ps = c.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < parametros.size(); i++) {
+                ps.setObject(i + 1, parametros.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapear(rs));
+                }
+            }
+        }
+
+        return lista;
+    }
+
 }
